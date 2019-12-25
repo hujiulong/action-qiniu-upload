@@ -1,0 +1,32 @@
+name: 'Qiniu Upload'
+description: 'github action for uploading files to qiniu'
+author: 'Jiulong Hu'
+inputs:
+  access_key:
+    description: 'access key'
+    required: true
+  secret_key:
+    description: 'secret key'
+    required: true
+  bucket:
+    description: 'bucket'
+    required: true
+  source_dir:
+    description: 'source dir'
+    default: './'
+    required: false
+  dest_dir:
+    description: 'dest dir, namely key prefix'
+    default: '/'
+    required: false
+  # overwrite:
+  #   description: 'overwrite the file of same key in bucket'
+  #   default: true
+  #   required: false
+  ignore_source_map:
+    description: 'ignore source maps'
+    default: true
+    required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
