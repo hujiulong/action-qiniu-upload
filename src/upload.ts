@@ -4,6 +4,14 @@ import glob from 'glob';
 import pAll from 'p-all';
 import pRetry from 'p-retry';
 
+function normalizePath(input: string): string {
+  let val = input.replace(/^\//, '');
+  if (!val.endsWith('/')) {
+    val += '/';
+  }
+  return val;
+}
+
 export function upload(
   token: string,
   srcDir: string,
@@ -22,7 +30,7 @@ export function upload(
 
   const tasks = files.map((file) => {
     const relativePath = path.relative(baseDir, path.dirname(file));
-    const key = path.join(destDir, relativePath, path.basename(file));
+    const key = normalizePath(path.join(destDir, relativePath, path.basename(file)));
 
     if (ignoreSourceMap && file.endsWith('.map')) return null;
 
