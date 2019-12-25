@@ -5140,64 +5140,24 @@ module.exports = require("string_decoder");
 /***/ 322:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
-function __ncc_wildcard$0 (arg) {
-  if (arg === "qiniu") return __webpack_require__(763);
-}
-function __ncc_wildcard$1 (arg) {
-  if (arg === "qiniu") return __webpack_require__(624);
-}
-function __ncc_wildcard$2 (arg) {
-  if (arg === "qiniu") return __webpack_require__(295);
-}
-function __ncc_wildcard$3 (arg) {
-  if (arg === "qiniu") return __webpack_require__(511);
-}
-function __ncc_wildcard$4 (arg) {
-  if (arg === "qiniu") return __webpack_require__(989);
-}
-function __ncc_wildcard$5 (arg) {
-  if (arg === "qiniu") return __webpack_require__(751);
-}
-function __ncc_wildcard$6 (arg) {
-  if (arg === "qiniu") return __webpack_require__(854);
-}
-function __ncc_wildcard$7 (arg) {
-  if (arg === "qiniu") return __webpack_require__(38);
-}
-function __ncc_wildcard$8 (arg) {
-  if (arg === "qiniu/rtc") return __webpack_require__(386);
-  else if (arg === "qiniu") return __webpack_require__(529);
-}
-function __ncc_wildcard$9 (arg) {
-  if (arg === "qiniu") return __webpack_require__(145);
-}
-function __ncc_wildcard$10 (arg) {
-  if (arg === "qiniu") return __webpack_require__(20);
-}
-function __ncc_wildcard$11 (arg) {
-  if (arg === "qiniu") return __webpack_require__(5);
-}
-function __ncc_wildcard$12 (arg) {
-  if (arg === "qiniu") return __webpack_require__(142);
-}
-var libPath = process.env.QINIU_COV ? './lib-cov' : './qiniu';
+var libPath = './qiniu';
 
 module.exports = {
     auth: {
-        digest: __ncc_wildcard$0(libPath)
+        digest: __webpack_require__(763)
     },
-    cdn: __ncc_wildcard$1(libPath),
-    form_up: __ncc_wildcard$2(libPath),
-    resume_up: __ncc_wildcard$3(libPath),
-    rs: __ncc_wildcard$4(libPath),
-    fop: __ncc_wildcard$5(libPath),
-    conf: __ncc_wildcard$6(libPath),
-    rpc: __ncc_wildcard$7(libPath),
-    util: __ncc_wildcard$8(libPath),
-    zone: __ncc_wildcard$9(libPath),
-    app: __ncc_wildcard$10(libPath),
-    room: __ncc_wildcard$11(libPath),
-    Credentials: __ncc_wildcard$12(libPath)
+    cdn: __webpack_require__(624),
+    form_up: __webpack_require__(295),
+    resume_up: __webpack_require__(511),
+    rs: __webpack_require__(989),
+    fop: __webpack_require__(751),
+    conf: __webpack_require__(854),
+    rpc: __webpack_require__(38),
+    util: __webpack_require__(529),
+    zone: __webpack_require__(145),
+    app: __webpack_require__(20),
+    room: __webpack_require__(5),
+    Credentials: __webpack_require__(142)
 };
 
 
@@ -5825,9 +5785,9 @@ function run() {
             const bucket = core.getInput('bucket');
             const sourceDir = core.getInput('source_dir');
             const destDir = core.getInput('dest_dir');
-            const ignoreSourceMap = core.getInput('ignore_source_map');
+            const ignoreSourceMap = core.getInput('ignore_source_map') === 'true';
             const token = token_1.genToken(bucket, ak, sk);
-            upload_1.upload(token, sourceDir, destDir, Boolean(ignoreSourceMap), (file, key) => core.info(`success: ${file} => ${key}`), () => core.info('Done!'), (error) => core.setFailed(error.message));
+            upload_1.upload(token, sourceDir, destDir, ignoreSourceMap, (file, key) => core.info(`success: ${file} => [${bucket}]: ${key}`), () => core.info('Done!'), (error) => core.setFailed(error.message));
         }
         catch (error) {
             core.setFailed(error.message);
@@ -13210,6 +13170,13 @@ const path_1 = __importDefault(__webpack_require__(622));
 const glob_1 = __importDefault(__webpack_require__(458));
 const p_all_1 = __importDefault(__webpack_require__(812));
 const p_retry_1 = __importDefault(__webpack_require__(255));
+function normalizePath(input) {
+    let val = input.replace(/^\//, '');
+    if (!val.endsWith('/')) {
+        val += '/';
+    }
+    return val;
+}
 function upload(token, srcDir, destDir, ignoreSourceMap, onProgress, onComplete, onFail) {
     const baseDir = path_1.default.resolve(process.cwd(), srcDir);
     const files = glob_1.default.sync(`${baseDir}/**/*`, { nodir: true });
@@ -13218,7 +13185,7 @@ function upload(token, srcDir, destDir, ignoreSourceMap, onProgress, onComplete,
     const putExtra = new qiniu_1.default.form_up.PutExtra();
     const tasks = files.map((file) => {
         const relativePath = path_1.default.relative(baseDir, path_1.default.dirname(file));
-        const key = path_1.default.join(destDir, relativePath, path_1.default.basename(file));
+        const key = normalizePath(path_1.default.join(destDir, relativePath, path_1.default.basename(file)));
         if (ignoreSourceMap && file.endsWith('.map'))
             return null;
         const task = () => new Promise((resolve, reject) => {
