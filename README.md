@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - uses: hujiulong/qiniu-upload-action@master
+    - uses: hujiulong/action-qiniu-upload@master
       with:
         # Your qiniu access key, required.
         access_key: ${{ secrets.QINIU_ACCESS_KEY }}

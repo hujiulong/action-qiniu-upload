@@ -1,5 +1,5 @@
 {
-  "name": "qiniu-upload-action",
+  "name": "action-qiniu-upload",
   "version": "0.0.1",
   "private": true,
   "description": "github action for uploading files to qiniu",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hujiulong/qiniu-upload-action.git"
+    "url": "git+https://github.com/hujiulong/action-qiniu-upload.git"
   },
   "keywords": [
     "actions",
@@ -24,7 +24,6 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.0",
-    "@typescript-eslint/parser": "^2.13.0",
     "glob": "^7.1.6",
     "p-all": "^2.1.0",
     "p-retry": "^4.2.0",
