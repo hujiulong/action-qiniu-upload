@@ -5,11 +5,7 @@ import pAll from 'p-all';
 import pRetry from 'p-retry';
 
 function normalizePath(input: string): string {
-  let val = input.replace(/^\//, '');
-  if (!val.endsWith('/')) {
-    val += '/';
-  }
-  return val;
+  return input.replace(/^\//, '');
 }
 
 export function upload(
