@@ -18,7 +18,7 @@ async function run(): Promise<void> {
       sourceDir,
       destDir,
       ignoreSourceMap,
-      (file, key) => core.info(`success: ${file} => [${bucket}]: ${key}`),
+      (file, key) => core.info(`Success: ${file} => [${bucket}]: ${key}`),
       () => core.info('Done!'),
       (error) => core.setFailed(error.message),
     );
